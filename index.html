@@ -3,65 +3,1025 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>¡Ups! Error desconocido – Streameko</title>
-  <meta name="description" content="Ups..." />
-  <meta name="robots" content="noindex, follow" />
+  <title>Streameko – Tu App de Anime Sin Anuncios</title>
+  <meta name="description" content="La experiencia definitiva para ver anime. Streameko te ofrece un catálogo enorme de series subtituladas y dobladas, completamente gratis y sin un solo anuncio. ¡Descarga la app!" />
+  <meta name="keywords" content="anime, app de anime, ver anime, anime gratis, anime sin anuncios, anime online, anime subtitulado, anime doblado, streameko" />
+  <meta name="author" content="Streameko" />
+  <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#e50914" />
-  
+  <link rel="canonical" href="https://app.streameko.qzz.io/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://app.streameko.qzz.io/" />
+  <meta property="og:title" content="Streameko – Tu App de Anime 100% Sin Anuncios" />
+  <meta property="og:description" content="Disfruta de tus animes favoritos, subtitulados y doblados. Cero interrupciones, cero anuncios. Solo anime." />
+  <meta property="og:image" content="https://i.postimg.cc/yNzkjyKW/Streameko-Logo.png" />
+
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://app.streameko.qzz.io/" />
+  <meta property="twitter:title" content="Streameko – Tu App de Anime 100% Sin Anuncios" />
+  <meta property="twitter:description" content="Disfruta de tus animes favoritos, subtitulados y doblados. Cero interrupciones, cero anuncios. Solo anime." />
+  <meta property="twitter:image" content="https://i.postimg.cc/yNzkjyKW/Streameko-Logo.png" />
+
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+
   <style>
     :root {
       --bg: #000000;
       --text: #ffffff;
       --accent: #e50914;
-      --primary: #a78bfa;
       --glass: rgba(255, 255, 255, 0.05);
       --card: #1f1f1f;
-      --glow-color: rgba(167, 139, 250, 0.4);
+      --glow-color: rgba(229, 9, 20, 0.5);
     }
     html { scroll-behavior: smooth; }
-    body { background-color: var(--bg); color: var(--text); font-family: sans-serif; }
-    .stylish-topbar { background: rgba(10, 10, 15, 0.6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid transparent; border-image: linear-gradient(to right, transparent, var(--accent), transparent) 1; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4); }
-    .logo-container { transition: transform 0.3s ease; }
-    .logo-container:hover { transform: scale(1.05); }
-    .logo-text { transition: text-shadow 0.3s ease; }
-    .logo-container:hover .logo-text { text-shadow: 0 0 10px var(--glow-color, var(--primary)); }
-    .nav-link-stylish { color: rgba(255, 255, 255, 0.8); padding: 0.5rem 1rem; border-radius: 8px; position: relative; overflow: hidden; transition: all 0.3s ease; z-index: 1; }
-    .nav-link-stylish::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--accent); opacity: 0; transform: scale(0.8); transition: all 0.4s ease; z-index: -1; border-radius: 8px; }
-    .nav-link-stylish:hover { color: white; transform: translateY(-2px); }
-    .nav-link-stylish:hover::before { opacity: 1; transform: scale(1); }
+    body { background-color: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+    
+    #loading-screen {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #000000 0%, #1a0000 100%);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    
+    #loading-screen.hidden {
+      opacity: 0;
+      transform: scale(1.1);
+      pointer-events: none;
+    }
+    
+    .loader-logo {
+      width: 120px;
+      height: 120px;
+      margin-bottom: 2rem;
+      animation: pulse-glow 2s ease-in-out infinite;
+    }
+    
+    @keyframes pulse-glow {
+      0%, 100% { filter: brightness(1); transform: scale(1); }
+      50% { filter: brightness(1.2); transform: scale(1.05); }
+    }
+    
+    .loading-bar-container {
+      width: 300px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .loading-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), #ff4d4d);
+      border-radius: 10px;
+      animation: loading 2s ease-in-out;
+      box-shadow: 0 0 20px var(--accent);
+    }
+    
+    @keyframes loading {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+    
+    .loading-text {
+      margin-top: 1.5rem;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--accent);
+      animation: fade-pulse 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes fade-pulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+    
+    .fade-in-up {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 0.8s ease forwards;
+    }
+    
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .fade-in-down {
+      opacity: 0;
+      transform: translateY(-30px);
+      animation: fadeInDown 0.6s ease forwards;
+    }
+    
+    @keyframes fadeInDown {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .scale-in {
+      opacity: 0;
+      transform: scale(0.8);
+      animation: scaleIn 0.6s ease forwards;
+    }
+    
+    @keyframes scaleIn {
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+    .delay-5 { animation-delay: 0.5s; }
+    .delay-6 { animation-delay: 0.6s; }
+    
+    .scroll-reveal {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    
+    .scroll-reveal.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .scroll-reveal-left {
+      opacity: 0;
+      transform: translateX(-50px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    
+    .scroll-reveal-left.revealed {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    
+    .scroll-reveal-right {
+      opacity: 0;
+      transform: translateX(50px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    
+    .scroll-reveal-right.revealed {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .stylish-topbar { 
+      background: rgba(10, 10, 15, 0.6); 
+      backdrop-filter: blur(16px); 
+      -webkit-backdrop-filter: blur(16px); 
+      border-bottom: 1px solid transparent; 
+      border-image: linear-gradient(to right, transparent, var(--accent), transparent) 1; 
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4); 
+    }
+    
+    .logo-container { cursor: pointer; }
+    
+    .logo-container:hover { 
+      transform: scale(1.05); 
+      transition: transform 0.3s ease; 
+    }
+    
+    .logo-container:hover .logo-text { 
+      text-shadow: 0 0 10px var(--glow-color); 
+      transition: text-shadow 0.3s ease; 
+    }
+    
+    .nav-link-stylish { 
+      color: rgba(255, 255, 255, 0.8); 
+      padding: 0.5rem 1rem; 
+      border-radius: 8px; 
+      position: relative; 
+      overflow: hidden; 
+      transition: all 0.3s ease; 
+      z-index: 1; 
+    }
+    
+    .nav-link-stylish::before { 
+      content: ''; 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      width: 100%; 
+      height: 100%; 
+      background: var(--accent); 
+      opacity: 0; 
+      transform: scale(0.8); 
+      transition: all 0.4s ease; 
+      z-index: -1; 
+      border-radius: 8px; 
+    }
+    
+    .nav-link-stylish:hover { 
+      color: white; 
+      transform: translateY(-2px); 
+    }
+    
+    .nav-link-stylish:hover::before { 
+      opacity: 1; 
+      transform: scale(1); 
+    }
+    
+    .cta-button { 
+      background-color: var(--accent); 
+      transition: all 0.3s ease; 
+      box-shadow: 0 0 20px var(--glow-color); 
+      position: relative; 
+      overflow: hidden; 
+    }
+    
+    .cta-button:hover { 
+      transform: scale(1.05) translateY(-2px); 
+      box-shadow: 0 0 35px var(--glow-color); 
+    }
+    
+    .cta-button::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s ease, height 0.6s ease;
+    }
+    
+    .cta-button:hover::after {
+      width: 300px;
+      height: 300px;
+    }
+
+    .feature-card { 
+      background: var(--glass); 
+      border: 1px solid rgba(255, 255, 255, 0.1); 
+      backdrop-filter: blur(10px); 
+      transition: transform 0.3s ease, box-shadow 0.3s ease; 
+      position: relative; 
+    }
+    
+    .feature-card:hover { 
+      transform: translateY(-5px); 
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4); 
+    }
+    
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(229, 9, 20, 0.1) 0%, transparent 100%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      border-radius: 0.75rem;
+      pointer-events: none;
+    }
+    
+    .feature-card:hover::before {
+      opacity: 1;
+    }
+
+    .scrolling-row { 
+      display: flex; 
+      overflow-x: auto; 
+      gap: 1rem; 
+      padding: 1rem 0; 
+      -webkit-overflow-scrolling: touch; 
+      scrollbar-width: none; 
+    }
+    
+    .scrolling-row::-webkit-scrollbar { 
+      display: none; 
+    }
+    
+    .anime-card { 
+      flex: 0 0 auto; 
+      width: 160px; 
+      background: var(--card); 
+      border-radius: 0.75rem; 
+      transition: transform 0.3s ease; 
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); 
+      padding: 0.5rem; 
+    }
+    
+    .anime-card img { 
+      width: 100%; 
+      height: 240px; 
+      object-fit: cover; 
+      border-radius: 0.5rem; 
+    }
+
+    @media (max-width: 767px) {
+      .anime-card { width: 140px; }
+      .anime-card img { height: 210px; }
+    }
+    
+    @media (hover: hover) {
+      .anime-card:hover { 
+        transform: scale(1.08) translateY(-5px); 
+        z-index: 10; 
+        box-shadow: 0 20px 40px rgba(229, 9, 20, 0.3); 
+      }
+      .anime-card:hover p { color: var(--accent); }
+    }
+    
+    .anime-card p { 
+      text-overflow: ellipsis; 
+      white-space: nowrap; 
+      overflow: hidden; 
+      transition: color 0.3s ease; 
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) translateX(0px); }
+      50% { transform: translateY(-20px) translateX(10px); }
+    }
+    
+    .floating-particle {
+      position: fixed;
+      width: 3px;
+      height: 3px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 0.6;
+      animation: float 6s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    #mobile-menu {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: max-height 0.3s ease-out, opacity 0.3s ease-out, transform 0.3s ease-out;
+    }
+    
+    #mobile-menu.menu-open {
+      max-height: 500px;
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .fake-popup {
+      position: absolute;
+      top: var(--top);
+      left: var(--left, auto);
+      right: var(--right, auto);
+      background-color: #f0f0f0;
+      color: #333;
+      border: 1px solid #ccc;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      border-radius: 8px;
+      width: 250px;
+      font-size: 14px;
+      z-index: 60;
+      opacity: 0;
+      transform: scale(0.5);
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @media (max-width: 767px) {
+      .fake-popup {
+        width: 150px;
+        font-size: 11px;
+      }
+      
+      #ad-slayer-section .fake-popup:nth-of-type(1) { --top: 8%; --left: 5%; --right: auto; }
+      #ad-slayer-section .fake-popup:nth-of-type(2) { --top: 60%; --left: 8%; --right: auto; }
+      #ad-slayer-section .fake-popup:nth-of-type(3) { --top: 25%; --right: 5%; --left: auto; }
+      #ad-slayer-section .fake-popup:nth-of-type(4) { --top: 75%; --right: 8%; --left: auto; }
+    }
+
+    .fake-popup.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .fake-popup.destroyed {
+      opacity: 0 !important;
+      transform: scale(0) rotate(360deg) !important;
+      transition: all 0.6s ease-in-out;
+    }
+
+    .popup-header {
+      background-color: #e0e0e0;
+      padding: 4px 8px;
+      border-bottom: 1px solid #ccc;
+      border-radius: 8px 8px 0 0;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .popup-header button {
+      background: #ff5f57;
+      border: 1px solid #e0443e;
+      border-radius: 50%;
+      width: 14px;
+      height: 14px;
+      color: #9a261f;
+      font-size: 10px;
+      line-height: 10px;
+      padding: 0;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .popup-header button:hover {
+      transform: scale(1.1);
+    }
+
+    .popup-content {
+      padding: 12px;
+    }
+
+    .popup-content a {
+      color: #007bff;
+      text-decoration: underline;
+      transition: color 0.2s ease;
+    }
+
+    .popup-content a:hover {
+      color: #0056b3;
+    }
+
+    #ad-slayer-text.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+    
+    @keyframes fadeInScale {
+      0% {
+        opacity: 0;
+        transform: scale(0.8) translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
   </style>
 </head>
+
 <body class="font-sans">
 
-<!--
-<header class="sticky top-0 z-50 w-full stylish-topbar">
+<div id="loading-screen">
+  <img src="favicon.ico" alt="Streameko" class="loader-logo">
+  <div class="loading-bar-container">
+    <div class="loading-bar"></div>
+  </div>
+  <p class="loading-text" id="loading-text"></p>
+</div>
+
+<header class="sticky top-0 z-50 w-full stylish-topbar fade-in-down">
   <div class="max-w-6xl mx-auto px-6">
     <nav class="flex items-center justify-between h-20">
-      <a href="index.html" class="flex items-center gap-3 logo-container">
+      <a href="#" class="flex items-center gap-3 logo-container scale-in">
         <img src="favicon.ico" alt="Logo de Streameko" class="h-9 w-9">
         <span class="text-2xl font-bold tracking-wider text-white logo-text">STREAMEKO</span>
       </a>
-      <div class="flex items-center gap-2 text-sm md:text-base font-semibold">
-        <a href="index.html" class="nav-link-stylish"><span>Inicio</span></a>
-        <a href="contacto.html" class="nav-link-stylish"><span>Contacto</span></a>
+      
+      <div class="hidden md:flex items-center gap-2 text-sm md:text-base font-semibold">
+        <a href="#features" class="nav-link-stylish fade-in-down delay-1"><span>Características</span></a>
+        <a href="#download" class="nav-link-stylish fade-in-down delay-2"><span>Descargar</span></a>
+      </div>
+
+      <div class="md:hidden scale-in delay-1">
+        <button id="mobile-menu-button" class="relative w-8 h-8 p-1 text-white rounded-md focus:outline-none" aria-label="Menú principal">
+          <svg id="icon-open" class="w-full h-full transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg id="icon-close" class="absolute top-1/2 left-1/2 w-full h-full -translate-x-1/2 -translate-y-1/2 transition-transform duration-300 scale-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
       </div>
     </nav>
   </div>
+
+  <div id="mobile-menu" class="md:hidden">
+    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+      <a href="#features" class="mobile-nav-link block px-3 py-2 text-base font-medium text-white/80 rounded-md hover:bg-zinc-800 hover:text-white">Características</a>
+      <a href="#download" class="mobile-nav-link block px-3 py-2 text-base font-medium text-white/80 rounded-md hover:bg-zinc-800 hover:text-white">Descargar</a>
+    </div>
+  </div>
 </header>
--->
 
+<main class="max-w-6xl mx-auto px-6 py-12 md:py-20">
 
-<main class="max-w-4xl mx-auto px-6 py-32 text-center">
-  <h1 class="text-5xl font-bold text-white mb-6">¿Quieres una experiencia sin anuncios?</h1>
-  <p class="text-lg text-white/80 mb-12">Trabajamos en ello... solo espera un poco.</p>
-  <a href="https://streameko.qzz.io" class="inline-block bg-red-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-red-700 transition-all transform hover:scale-105">
-    Volver
-  </a>
+  <section class="my-16 text-center">
+    <h1 class="text-4xl font-black tracking-tight md:text-6xl mb-4 fade-in-up" style="text-shadow: 0 0 15px rgba(0,0,0,0.5);">
+      Tu Universo de Anime.
+      <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-700">Sin Interrupciones.</span>
+    </h1>
+    <p class="max-w-2xl mx-auto text-lg md:text-xl text-white/80 mb-6 fade-in-up delay-1">
+      Apps para ver anime gratis hay muchas… pero ¿alguna sin anuncios aparte de Streameko? Spoiler: no. Aquí tu maratón es sagrado.
+    </p>
+    <a href="#download" class="inline-block px-8 py-3 text-lg font-bold text-white rounded-full cta-button scale-in delay-2">
+      Descargar la App
+    </a>
+  </section>
+
+  <section class="my-24 scroll-reveal">
+    <h2 class="mb-4 text-3xl font-bold text-center">La App en Acción</h2>
+    <p class="text-center text-white/70 mb-12 max-w-2xl mx-auto">No, no es un sueño tuyo, si existimos.</p>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="feature-card p-4 rounded-xl overflow-hidden scroll-reveal-left">
+        <div class="bg-zinc-800 rounded-lg overflow-hidden mb-3 aspect-[9/16] flex items-center justify-center">
+          <img src="App1.webp" alt="Catálogo" class="w-full h-full object-contain" />
+        </div>
+        <h3 class="font-bold text-lg mb-1">Catálogo Variado</h3>
+        <p class="text-sm text-white/60">Miles de animes esperando de tu atención.</p>
+      </div>
+      
+      <div class="feature-card p-4 rounded-xl overflow-hidden scroll-reveal delay-1">
+        <div class="bg-zinc-800 rounded-lg overflow-hidden mb-3 aspect-[9/16] flex items-center justify-center">
+          <img src="App2.webp" alt="Mi lista" class="w-full h-full object-contain" />
+        </div>
+        <h3 class="font-bold text-lg mb-1">Lista de animes</h3>
+        <p class="text-sm text-white/60">¿Aquella lista de animes que nunca verás? La tenemos.</p>
+      </div>
+      
+      <div class="feature-card p-4 rounded-xl overflow-hidden scroll-reveal-right">
+        <div class="bg-zinc-800 rounded-lg overflow-hidden mb-3 aspect-[9/16] flex items-center justify-center gap-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-white/80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="5" y="10" width="14" height="10" rx="2" ry="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8 10V7a4 4 0 0 1 8 0v3" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="12" cy="15" r="1.5" fill="currentColor"/>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-red-400/90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="4" y="4" width="16" height="6" rx="1.5" ry="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="4" y="14" width="16" height="6" rx="1.5" ry="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="8" cy="7" r="1" fill="currentColor"/>
+            <circle cx="8" cy="17" r="1" fill="currentColor"/>
+            <line x1="3" y1="3" x2="21" y2="21" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            <line x1="21" y1="3" x2="3" y2="21" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3 class="font-bold text-lg mb-1">Sin cuentas ni servidores</h3>
+        <p class="text-sm text-white/60">Tus datos no salen de tu celular, y como los servidores cuestan un ojo de la cara, puedes estar tranquilo: nunca tendremos tus datos.</p>
+      </div>
+    </div>
+  </section>
+  
+  <section id="features" class="my-24 scroll-reveal">
+    <h2 class="mb-12 text-3xl font-bold text-center">¿Por qué Streameko es para ti?</h2>
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+      <div class="p-6 text-center rounded-xl feature-card scroll-reveal-left">
+        <div class="mb-4 text-5xl">🚫</div>
+        <h3 class="mb-2 text-xl font-bold">Cero Anuncios. Solo Anime.</h3>
+        <p class="text-white/70">
+          En serio. No hay banners, pop-ups ni videos molestos de anuncios. Ni antes, ni durante, ni después. Solo tú y tu anime favorito, sin interrupciones molestas.
+        </p>
+      </div>
+      <div class="p-6 text-center rounded-xl feature-card scroll-reveal delay-1">
+        <div class="mb-4 text-5xl">🗣️</div>
+        <h3 class="mb-2 text-xl font-bold">Subtitulado y Doblado</h3>
+        <p class="text-white/70">
+          ¿Prefieres la emoción del japonés original o la comodidad del doblaje latino? Tú eliges. Ofrecemos una amplia selección en ambos formatos.
+        </p>
+      </div>
+      <div class="p-6 text-center rounded-xl feature-card scroll-reveal-right">
+        <div class="mb-4 text-5xl">📚</div>
+        <h3 class="mb-2 text-xl font-bold">Un Catálogo en Expansión</h3>
+        <p class="text-white/70">
+          Desde los clásicos que definieron generaciones hasta los estrenos más recientes de Japón. Siempre tendrás algo nuevo que descubrir.
+        </p>
+      </div>
+      <div class="p-6 text-center rounded-xl feature-card scroll-reveal-right">
+        <div class="mb-4 text-5xl">⬇</div>
+        <h3 class="mb-2 text-xl font-bold">Visualización Offline</h3>
+        <p class="text-white/70">
+          ¿Viaje por carretera largo? ¿Camión-kun cortó el cable de fibra óptica? No hay problema. Descarga tus episodios favoritos y míralos cuando quieras y donde sea sin conexión.
+        </p>
+      </div>
+      <div class="p-6 text-center rounded-xl feature-card scroll-reveal-right">
+        <div class="mb-4 text-5xl">📜</div>
+        <h3 class="mb-2 text-xl font-bold">Actualizaciones Constantes</h3>
+        <p class="text-white/70">
+          Mientras no me abduzca un extraterrestre, actualizaré episodios a diario. Nuevos episodios, nuevos animes. Tienes anime para rato.
+        </p>
+      </div>
+      <div class="p-6 text-center rounded-xl feature-card scroll-reveal-right">
+        <div class="mb-4 text-5xl">📩</div>
+        <h3 class="mb-2 text-xl font-bold">Contacto directo</h3>
+        <p class="text-white/70">
+          A diferencia de empresas gigantes que usan IA para su soporte (cof cof, Youtube) aquí siempre podrás contactar a alguien adicto al anime para que te ayude con cualquier duda o problema.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="ad-slayer-section" class="relative my-24 min-h-[350px] md:min-h-[400px] flex justify-center items-center overflow-hidden border-2 border-dashed border-zinc-700 rounded-2xl p-4 bg-black/20">
+    <div id="ad-slayer-text" class="text-3xl md:text-4xl font-bold text-center opacity-0 transition-all duration-500 transform scale-90 text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-red-600">
+      ¿Demon Slayer... o Ad Slayer?<br>
+      Streameko tiene ambos.
+    </div>
+
+    <div class="fake-popup" style="--top: 15%; --left: 10%;" aria-hidden="true">
+      <div class="popup-header"><span>¡FELICIDADES!</span><button>&times;</button></div>
+      <div class="popup-content">Ganaste un iPhone 17 Pro Max Plus Ultra. <a href="https://archive.org/download/MacArthur_Foundation_100andChange_dQw4w9WgXcQ/Rick_Astley_-_Never_Gonna_Give_You_Up_dQw4w9WgXcQ.mp4" target="_blank">Reclamar</a></div>
+    </div>
+    <div class="fake-popup" style="--top: 50%; --left: 25%;" aria-hidden="true">
+      <div class="popup-header"><span>Hoy es noche de...</span><button>&times;</button></div>
+      <div class="popup-content">Solteras en tu área quieren conocerte.</div>
+    </div>
+    <div class="fake-popup" style="--top: 20%; --right: 15%;" aria-hidden="true">
+      <div class="popup-header"><span>Antivirus</span><button>&times;</button></div>
+      <div class="popup-content">URGENTE: Tu dispositivo podría tener 3 virus, 5 troyanos, 40 spywares y 1 ransomware.</div>
+    </div>
+    <div class="fake-popup" style="--top: 65%; --right: 5%;" aria-hidden="true">
+      <div class="popup-header"><span>Oferta limitada</span><button>&times;</button></div>
+      <div class="popup-content">¡Agranda tu... maratón de anime con este truco!</div>
+    </div>
+  </section>
+
+  <section class="my-24 text-center px-6 scroll-reveal">
+    <h2 class="mb-6 text-3xl font-bold">Gratis de Verdad. Sin Trucos.</h2>
+    <p class="max-w-2xl mx-auto text-white/80 text-lg md:text-xl mb-4">
+      Tu maratón es solo tuyo, sin pagos o rastreos ocultos… solo la emoción de ver anime sin interrupciones. 🎬✨
+      A diferencia de otras apps donde "gratis" significa que <strong>TÚ</strong> eres el producto, en Streameko eso no pasa. Aquí no hay trackers, anuncios escondidos ni pop-ups tramposos.  
+    </p>
+    <p class="max-w-2xl mx-auto text-white/70 italic">
+      Es como ese milagro que estabas esperando: nada de engaños, solo anime puro y sin anuncios de juegos hechos en Unity.
+    </p>
+  </section>
+
+  <section class="my-24 scroll-reveal">
+    <h2 class="mb-4 text-3xl font-bold">Un Vistazo a Nuestro Catálogo</h2>
+    <div class="scrolling-row">
+      <div class="anime-card"><img src="https://image.tmdb.org/t/p/w342/c1T8UHwCaq6JeQYgt4U8ERPGoxN.jpg" alt="Kaiju" /><p class="mt-1 text-sm">Kaiju No. 8</p></div>
+      <div class="anime-card"><img src="https://image.tmdb.org/t/p/w342/7Uj6vqmznWQ3w3hpQ1eIY9mMyMw.jpg" alt="Kimetsu" /><p class="mt-1 text-sm">Kimetsu no Yaiba</p></div>
+      <div class="anime-card"><img src="https://image.tmdb.org/t/p/w342/twxobVy7Vi0CwrY9vdncmvXehNn.jpg" alt="Bolas" /><p class="mt-1 text-sm">Dragon Ball Z</p></div>
+      <div class="anime-card"><img src="https://image.tmdb.org/t/p/w342/ewHMpGo46KFHxYh50SxDusjTVM9.jpg" alt="Death" /><p class="mt-1 text-sm">Death Note</p></div>
+      <div class="anime-card"><img src="https://image.tmdb.org/t/p/w342/ekQD9ItsjglqlCvoJiXqGXJb5Jz.jpg" alt="Konosuba" /><p class="mt-1 text-sm">Konosuba</p></div>
+      <div class="anime-card"><img src="https://image.tmdb.org/t/p/w342/gW7BURBBHbkLeuqhrtixt7fUWAj.jpg" alt="Yofukashi" /><p class="mt-1 text-sm">Yofukashi No Uta 2</p></div>
+      <div class="anime-card"><img src="https://image.tmdb.org/t/p/w342/Mhxyvg9g8cLG17f0KWMRiUzKyY.jpg" alt="Komi" /><p class="mt-1 text-sm">Komi Can't Communicate</p></div>
+      <div class="anime-card"><img src="https://image.tmdb.org/t/p/w342/mVAWCCNBxPX3EUf9XhcFff4wW5V.jpg" alt="Blue" /><p class="mt-1 text-sm">Blue Box</p></div>
+      <div class="anime-card"><img src="https://image.tmdb.org/t/p/w342/cRtyoypoIfrW8SWyVw0y554xWQ.jpg" alt="Flor" /><p class="mt-1 text-sm">La nobleza de las flores</p></div>
+      <div class="anime-card"><img src="https://image.tmdb.org/t/p/w342/dqZENchTd7lp5zht7BdlqM7RBhD.jpg" alt="Frieren" /><p class="mt-1 text-sm">Frieren: Beyond Journey's End</p></div>
+      <div class="anime-card flex flex-col justify-center items-center text-center bg-zinc-800"><p class="font-bold">Y muchos más...</p><p class="text-xs text-white/60">(¡más de 2K!)</p></div>
+    </div>
+  </section>
+
+  <section id="download" class="p-8 text-center bg-zinc-900 rounded-2xl my-24 md:p-12 scroll-reveal">
+    <h2 class="mb-3 text-3xl font-bold md:text-4xl">¿Listo para comenzar?</h2>
+    <p class="max-w-xl mx-auto mb-8 text-lg text-white/70">Descarga Streameko ahora y únete a una comunidad que ama el anime tanto como tú. Aquí tu maratón es 100% libre de anuncios.</p>
+    <div class="flex flex-col gap-4 sm:flex-row justify-center">
+        <a href="successcel.html" class="inline-block px-8 py-3 text-lg font-bold text-white rounded-full cta-button">Descargar para Android</a>
+        <a href="downloadtv.html" class="inline-block px-8 py-3 text-lg font-bold text-white rounded-full cta-button">Descargar para Google TV</a>
+    </div>
+  </section>
+
 </main>
+
+<footer class="py-8 text-center border-t border-white/10">
+  <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+    <p class="text-white/50">© 2026 Streameko. ¡Para la comunidad!</p>
+    <div class="flex gap-4 items-center">
+      <a href="https://streameko.qzz.io/privacidad" target="_blank">Política de privacidad</a>
+      <a href="https://streameko.qzz.io/contacto" target="_blank">Contacto</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+    console.log('¿Por qué no hablamos? Me encantaría saber tu opinión');
+    console.log('Puedes contactarme en mi correo soporte@streameko.qzz.io o en Twitter @Streameko');
+
+  console.log('%c\n"El anime pirata... ¿es realmente malo si lo compartimos con amor?" \n- Un sabio anónimo del internet', 'color: #888; font-size: 11px;');
+
+  window.addEventListener('load', () => {
+    const loadingScreen = document.getElementById('loading-screen');
+    
+    setTimeout(() => {
+      loadingScreen.classList.add('hidden');
+      
+      document.body.style.overflow = 'visible';
+      
+      createFloatingParticles();
+    }, 2200);
+  });
+  
+
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const targetElement = document.querySelector(this.getAttribute('href'));
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+
+  const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const iconOpen = document.getElementById('icon-open');
+  const iconClose = document.getElementById('icon-close');
+  const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+  const toggleMenu = () => {
+    const isOpen = mobileMenu.classList.toggle('menu-open');
+    if (isOpen) {
+      iconOpen.style.transform = 'scale(0) rotate(-90deg)';
+      iconClose.style.transform = 'scale(1) rotate(0)';
+    } else {
+      iconOpen.style.transform = 'scale(1) rotate(0)';
+      iconClose.style.transform = 'scale(0) rotate(90deg)';
+    }
+  };
+
+  mobileMenuButton.addEventListener('click', toggleMenu);
+  mobileNavLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      if (mobileMenu.classList.contains('menu-open')) toggleMenu();
+    });
+  });
+
+  const scrollRevealElements = document.querySelectorAll('.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right');
+  
+  const revealOnScroll = () => {
+    scrollRevealElements.forEach(element => {
+      const elementTop = element.getBoundingClientRect().top;
+      const windowHeight = window.innerHeight;
+      
+      if (elementTop < windowHeight * 0.8) {
+        element.classList.add('revealed');
+      }
+    });
+  };
+
+  window.addEventListener('scroll', revealOnScroll);
+  window.addEventListener('load', revealOnScroll);
+
+  const animeCards = document.querySelectorAll('.anime-card');
+  
+  window.addEventListener('scroll', () => {
+    animeCards.forEach((card) => {
+      const rect = card.getBoundingClientRect();
+      const scrollPercent = (window.innerHeight - rect.top) / window.innerHeight;
+      
+      if (scrollPercent > 0 && scrollPercent < 1) {
+        const translateY = (scrollPercent - 0.5) * 10;
+        card.style.transform = `translateY(${translateY}px)`;
+      }
+    });
+  });
+  
+  const logoContainer = document.querySelector('.logo-container');
+  let clickCount = 0;
+  let clickTimer = null;
+  
+  logoContainer.addEventListener('click', (e) => {
+    e.preventDefault();
+    clickCount++;
+    
+    if (clickTimer) clearTimeout(clickTimer);
+    
+    if (clickCount === 3) {
+      activateBocchiMode();
+      clickCount = 0;
+    } else {
+      clickTimer = setTimeout(() => {
+        clickCount = 0;
+      }, 500);
+    }
+  });
+  
+
+  
+  function createSingleConfetti() {
+    const colors = ['#e50914', '#ff4d4d', '#ffffff', '#ff8080', '#ffb6c1'];
+    const confetti = document.createElement('div');
+    confetti.style.position = 'fixed';
+    confetti.style.width = (Math.random() * 10 + 5) + 'px';
+    confetti.style.height = (Math.random() * 10 + 5) + 'px';
+    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    confetti.style.left = Math.random() * 100 + '%';
+    confetti.style.top = '-10px';
+    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+    confetti.style.pointerEvents = 'none';
+    confetti.style.zIndex = '10001';
+    confetti.style.opacity = '0.9';
+    
+    document.body.appendChild(confetti);
+    
+    let y = -10;
+    let x = parseFloat(confetti.style.left);
+    let rotation = 0;
+    let velocity = Math.random() * 3 + 2;
+    let drift = (Math.random() - 0.5) * 2;
+    
+    const animate = () => {
+      y += velocity;
+      x += drift;
+      rotation += 5;
+      
+      confetti.style.transform = `translate(${x - parseFloat(confetti.style.left)}px, ${y}px) rotate(${rotation}deg)`;
+      
+      if (y < window.innerHeight + 50) {
+        requestAnimationFrame(animate);
+      } else {
+        confetti.remove();
+      }
+    };
+    
+    requestAnimationFrame(animate);
+  }
+
+
+  const adSlayerSection = document.getElementById('ad-slayer-section');
+  const fakePopups = document.querySelectorAll('.fake-popup');
+  const slayerText = document.getElementById('ad-slayer-text');
+
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.5
+  };
+
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        fakePopups.forEach((popup, index) => {
+          setTimeout(() => {
+            popup.classList.add('visible');
+          }, index * 150);
+        });
+
+        setTimeout(() => {
+          fakePopups.forEach(popup => {
+            popup.classList.add('destroyed');
+          });
+
+          setTimeout(() => {
+              slayerText.classList.add('visible');
+          }, 700);
+
+        }, 5000);
+
+        observer.unobserve(adSlayerSection);
+      }
+    });
+  }, observerOptions);
+
+  observer.observe(adSlayerSection);
+  
+  const downloadSection = document.getElementById('download');
+  let confettiTriggered = false;
+  
+  const downloadObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !confettiTriggered) {
+        confettiTriggered = true;
+        createMiniConfetti();
+      }
+    });
+  }, { threshold: 0.7 });
+  
+  downloadObserver.observe(downloadSection);
+  
+  function createMiniConfetti() {
+    const colors = ['#e50914', '#ff4d4d', '#ffffff', '#ff8080'];
+    
+    for (let i = 0; i < 30; i++) {
+      const confetti = document.createElement('div');
+      confetti.style.position = 'fixed';
+      confetti.style.width = '8px';
+      confetti.style.height = '8px';
+      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      confetti.style.left = '50%';
+      confetti.style.top = '50%';
+      confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+      confetti.style.pointerEvents = 'none';
+      confetti.style.zIndex = '9999';
+      confetti.style.opacity = '0.8';
+      
+      document.body.appendChild(confetti);
+      
+      const angle = (Math.PI * 2 * i) / 30;
+      const velocity = 3 + Math.random() * 3;
+      
+      let x = 0;
+      let y = 0;
+      let opacity = 0.8;
+      
+      const animate = () => {
+        x += Math.cos(angle) * velocity;
+        y += Math.sin(angle) * velocity + 2;
+        opacity -= 0.02;
+        
+        confetti.style.transform = `translate(${x}px, ${y}px) rotate(${x * 2}deg)`;
+        confetti.style.opacity = opacity;
+        
+        if (opacity > 0) {
+          requestAnimationFrame(animate);
+        } else {
+          confetti.remove();
+        }
+      };
+      
+      requestAnimationFrame(animate);
+    }
+  }
+
+
+  const frases = [
+    "Llamando a Cloudflare...",
+    "Preparando el maratón (y las palomitas)...",
+    "Despertando al servidor... (espera, no tenemos servidor)...",
+    "Afinando el ending (no llores, aún no acaba)...",
+    "Ajustando frames del destino...",
+    "Compilando recuerdos del pasado...",
+    "Streameko está aplicando su transformación final…",
+    "Conectando al multiverso de la procrastinación...",
+    "Iniciando Streameko — tu refugio otaku digital.",
+    "Sincronizando con la red del anime infinito…",
+    "El viaje comienza… acompáñanos.",
+    "¡Recuerda apoyar a los creadores originales!",
+    "Probablemente mientras lees esto yo estaré durmiendo... O agregando más anime.",
+    "Streameko viene de Stream y Neko juntos, no tenía ideas.",
+    "Respira… el siguiente episodio está por comenzar.",
+    "Las emociones tardan un poco más en inicializar...",
+    "Este texto se autodestruirá cuando la pagina cargue.",
+    "Cargando trama… y algo de relleno, lo siento.",
+    "Alguien olvidó poner el final del código… ups.",
+    "¡Carga, maldita sea, carga!",
+    "No te vayas, esto está a punto de brillar.",
+    "Mientras esperas, imagina tu anime favorito…",
+    "La noche también está cargando…",
+    "Solo tardé 1 semana y media en lograr que el scrapper de la app funcionara, pero el anime sin anuncios lo vale.",
+    "Felicidades Shinji",
+    "Preparando el solo más ansioso de Internet.",
+    "Desbloqueando modo social: error crítico detectado.",
+    "Encendiendo las luces de la noche eterna…",
+    "Vampirizando la conexión para mayor estabilidad...",
+    "Sincronizando insomnio con sentimientos...",
+    "Importando olor a noche y neón.",
+    "El servidor también tiene insomnio.",
+    "La noche murmura: 'solo un episodio más...'",
+    "¿Dormir? Nah, la noche apenas empieza.",
+    "¿Aún despierto? Jeh, sabía que eras de los míos.",
+    "“Tranquilo, no muerdo... mucho.” - Probablemente Nazuna Nanakusa",
+    "“Yofukashi no uta~ terashi tette moonlight~”",
+    "Guardando silencios que dicen más que mil palabras...",
+    "No hay palabras, pero Streameko entiende",
+    "Detectando niveles peligrosos de ternura…",
+    "No hay lag cuando miras así.",
+    "Reuniendo 100 amigos… cargando el primero...",
+    "Desencriptando tsunderismo avanzado.",
+    "Volviendo al punto de guardado anterior...",
+    "Reseteando la línea temporal, otra vez...",
+    "Nunca supe diferenciar a Emilia de Satella.",
+    "¿Emilia o Rem? Mi respeto hacia ti depende de tu respuesta.",
+    "Modo ‘¿qué acabo de ver?’ activado.",
+    "Inyectando dosis de caos y ternura al sistema.",
+    "Sincronizando energía espiritual y alienígena...",
+    "Anomalía detectada: diversión inminente.",
+    "Escribiendo tu nombre en el log del servidor...",
+    "L sospecha que el lag no es coincidencia.",
+    "Kira está optimizando los tiempos de carga.",
+    "¿Podría ser yo el Dios del nuevo mundo para ver anime?",
+    "Solo un episodio más... y otro... y otro...",
+    "En lugar de ver muchos animes, mejor ve uno solo pero que te haga sentir algo",
+    "¡Maldita sea, L! ¿Por qué siempre arruinas mis planes de maratón?",
+    "Sospecho que Light es Kira... También sospecho que Streameko desea tu felicidad",
+    "Komi no puede comunicarse... yo tampoco, creo",
+    "Error en la linea 654: Error 404 al cargar anuncios, procediendo sin ellos",
+    "Cargando spoilers... no, espera, mejor no",
+    "Escribo esto en lugar de ver Komi-san, sean agradecidos",
+    "Mis sentimientos están encriptados, aun no encuentro la llave de desencriptación",
+    "La temporada 3 de Komi-san llegará antes del GTA VI, confíen en mí"
+  ];
+
+  const texto = frases[Math.floor(Math.random() * frases.length)];
+  document.getElementById("loading-text").textContent = texto;
+</script>
 
 </body>
 </html>
-
-
-

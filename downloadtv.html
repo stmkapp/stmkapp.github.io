@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Instalar en Google TV – Streameko</title>
+  <meta name="description" content="Guía paso a paso para instalar Streameko en tu Google TV usando Downloader." />
+  <meta name="theme-color" content="#e50914" />
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #000000;
+      --text: #ffffff;
+      --accent: #e50914;
+      --glass: rgba(255, 255, 255, 0.05);
+      --card: #1f1f1f;
+      --glow-color: rgba(229, 9, 20, 0.5);
+    }
+    
+    html { scroll-behavior: smooth; }
+    body { 
+      background-color: var(--bg); 
+      color: var(--text); 
+      font-family: 'Inter', sans-serif; 
+      overflow-x: hidden; 
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    
+    @keyframes pulse-glow {
+      0%, 100% { 
+        box-shadow: 0 0 20px var(--glow-color);
+      }
+      50% { 
+        box-shadow: 0 0 40px var(--glow-color);
+      }
+    }
+    
+    .fade-in-up {
+      animation: fadeInUp 0.8s ease forwards;
+    }
+    
+    .fade-in-down {
+      animation: fadeInDown 0.6s ease forwards;
+    }
+    
+    .scale-in {
+      animation: scaleIn 0.6s ease forwards;
+    }
+    
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+    .delay-5 { animation-delay: 0.5s; }
+    .delay-6 { animation-delay: 0.6s; }
+    .delay-7 { animation-delay: 0.7s; }
+    .delay-8 { animation-delay: 0.8s; }
+    
+    .stylish-topbar { 
+      background: rgba(10, 10, 15, 0.6); 
+      backdrop-filter: blur(16px); 
+      -webkit-backdrop-filter: blur(16px); 
+      border-bottom: 1px solid transparent; 
+      border-image: linear-gradient(to right, transparent, var(--accent), transparent) 1; 
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4); 
+    }
+    
+    .logo-container { cursor: pointer; }
+    
+    .logo-container:hover { 
+      transform: scale(1.05); 
+      transition: transform 0.3s ease; 
+    }
+    
+    .logo-container:hover .logo-text { 
+      text-shadow: 0 0 10px var(--glow-color); 
+      transition: text-shadow 0.3s ease; 
+    }
+    
+    .step-card { 
+      background: var(--glass); 
+      border: 1px solid rgba(255, 255, 255, 0.1); 
+      backdrop-filter: blur(10px); 
+      transition: all 0.3s ease; 
+      position: relative; 
+      overflow: hidden;
+    }
+    
+    .step-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(229, 9, 20, 0.1), transparent);
+      transition: left 0.5s ease;
+    }
+    
+    .step-card:hover::before {
+      left: 100%;
+    }
+    
+    .step-card:hover { 
+      transform: translateX(5px); 
+      border-color: var(--accent);
+      box-shadow: -5px 0 20px rgba(229, 9, 20, 0.3);
+    }
+    
+    .step-number {
+      background: linear-gradient(135deg, var(--accent), #ff4d4d);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+      box-shadow: 0 0 20px var(--glow-color);
+    }
+    
+    .code-box {
+      background: rgba(229, 9, 20, 0.1);
+      border: 2px solid var(--accent);
+      border-radius: 12px;
+      padding: 1.5rem;
+      display: inline-block;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      animation: pulse-glow 2s ease infinite;
+    }
+    
+    .code-box:hover {
+      transform: scale(1.05);
+      background: rgba(229, 9, 20, 0.2);
+    }
+    
+    .code-number {
+      font-size: 3rem;
+      font-weight: 900;
+      letter-spacing: 0.5rem;
+      color: var(--accent);
+      text-shadow: 0 0 20px var(--glow-color);
+    }
+    
+    .copy-feedback {
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%) scale(0);
+      background: var(--accent);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: transform 0.3s ease;
+      pointer-events: none;
+    }
+    
+    .copy-feedback.show {
+      transform: translateX(-50%) scale(1);
+    }
+    
+    .alert-box {
+      background: rgba(255, 152, 0, 0.1);
+      border-left: 4px solid #ff9800;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+    }
+    
+    .cta-button { 
+      background-color: var(--accent); 
+      transition: all 0.3s ease; 
+      box-shadow: 0 0 20px var(--glow-color); 
+      position: relative; 
+      overflow: hidden; 
+    }
+    
+    .cta-button:hover { 
+      transform: scale(1.05) translateY(-2px); 
+      box-shadow: 0 0 35px var(--glow-color); 
+    }
+    
+    .cta-button::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s ease, height 0.6s ease;
+    }
+    
+    .cta-button:hover::after {
+      width: 300px;
+      height: 300px;
+    }
+  </style>
+</head>
+
+<body class="font-sans">
+
+<header class="sticky top-0 z-50 w-full stylish-topbar fade-in-down">
+  <div class="max-w-6xl mx-auto px-6">
+    <nav class="flex items-center justify-between h-20">
+      <a href="/" class="flex items-center gap-3 logo-container scale-in">
+        <img src="favicon.ico" alt="Logo de Streameko" class="h-9 w-9">
+        <span class="text-2xl font-bold tracking-wider text-white logo-text">STREAMEKO</span>
+      </a>
+      
+      <div class="flex items-center gap-4 text-sm md:text-base font-semibold">
+        <a href="/" class="text-white/80 hover:text-white transition-colors">Inicio</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main class="max-w-5xl mx-auto px-6 py-12 md:py-20">
+  
+  <section class="text-center mb-16">
+    <div class="text-6xl mb-6 fade-in-up">📺</div>
+    <h1 class="text-4xl md:text-5xl font-black mb-4 fade-in-up delay-1" style="text-shadow: 0 0 15px rgba(0,0,0,0.5);">
+      Instala Streameko en tu <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-700">Google TV</span>
+    </h1>
+    
+    <p class="text-lg md:text-xl text-white/80 mb-8 fade-in-up delay-2 max-w-2xl mx-auto">
+      Sigue estos sencillos pasos para disfrutar de todo tu anime favorito en la pantalla grande.
+    </p>
+  </section>
+
+  <section class="text-center mb-16 fade-in-up delay-3">
+    <h2 class="text-2xl font-bold mb-6">Código de Descarga</h2>
+    <div class="code-box" id="codeBox" onclick="copyCode()">
+      <div class="copy-feedback" id="copyFeedback">¡Copiado! ✓</div>
+      <div class="code-number" id="codeNumber">9261428</div>
+      <p class="text-white/60 mt-3 text-sm">Toca para copiar</p>
+    </div>
+  </section>
+
+  <section class="mb-16">
+    <h2 class="text-3xl font-bold mb-8 fade-in-up delay-4">Guía Paso a Paso</h2>
+    
+    <div class="space-y-6">
+      <div class="step-card p-6 rounded-xl flex gap-6 items-start fade-in-up delay-4">
+        <div class="step-number">1</div>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold mb-2">Descarga la App "Downloader by AFTVnews"</h3>
+          <p class="text-white/70 mb-3">
+            Abre la <strong>Google Play Store</strong> en tu Google TV y busca <strong>"Downloader by AFTVnews"</strong>. Descárgala e instálala.
+          </p>
+          <div class="alert-box">
+            <p class="text-sm text-white/90">💡 <strong>Tip:</strong> Puedes usar el control de voz diciendo "Descargar Downloader"</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card p-6 rounded-xl flex gap-6 items-start fade-in-up delay-5">
+        <div class="step-number">2</div>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold mb-2">Abre Downloader</h3>
+          <p class="text-white/70">
+            Una vez instalada, haz los pasos de el area de "¿Problemas con la Instalación? - No me permite instalar aplicaciones desconocidas", luego abre la aplicación Downloader desde tu lista de apps.
+          </p>
+        </div>
+      </div>
+
+      <div class="step-card p-6 rounded-xl flex gap-6 items-start fade-in-up delay-6">
+        <div class="step-number">3</div>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold mb-2">Ingresa el Código</h3>
+          <p class="text-white/70 mb-3">
+            En la pantalla principal de Downloader, verás un campo para ingresar una URL o código. Escribe o pega el código:
+          </p>
+          <div class="bg-black/30 border border-white/10 rounded-lg p-4 font-mono text-xl text-center">
+            <span class="text-accent font-bold">9261428</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card p-6 rounded-xl flex gap-6 items-start fade-in-up delay-7">
+        <div class="step-number">4</div>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold mb-2">Descarga e Instala</h3>
+          <p class="text-white/70 mb-3">
+            Presiona <strong>"Go"</strong> o <strong>"Descargar"</strong>. La app descargará automáticamente el archivo de instalación de Streameko.
+          </p>
+          <p class="text-white/70">
+            Cuando termine, se abrirá el instalador. Presiona <strong>"Instalar"</strong> y espera a que termine.
+          </p>
+        </div>
+      </div>
+
+      <div class="step-card p-6 rounded-xl flex gap-6 items-start fade-in-up delay-8">
+        <div class="step-number">5</div>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold mb-2">¡Listo para Disfrutar! 🎉</h3>
+          <p class="text-white/70 mb-3">
+            Una vez instalada, abre <strong>Streameko</strong> desde tus aplicaciones y empieza tu maratón.
+          </p>
+          <div class="alert-box">
+            <p class="text-sm text-white/90">✨ Puedes eliminar Downloader después si lo deseas, ya no la necesitarás.</p>
+            <p class="text-sm text-white/90">⚠️ Recuerda habilitar el permiso para instalar aplicaciones desconocidas para la app de Streameko, de esta forma evitarás problemas al instalar actualizaciones.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="step-card p-8 rounded-2xl mb-16 fade-in-up delay-8">
+    <h2 class="text-2xl font-bold mb-6 text-center">¿Problemas con la Instalación?</h2>
+    
+    <div class="space-y-4 max-w-2xl mx-auto">
+      <details class="group">
+        <summary class="cursor-pointer font-semibold p-4 bg-black/30 rounded-lg hover:bg-black/50 transition-colors">
+          ❓ No encuentro Downloader en la Play Store
+        </summary>
+        <div class="p-4 text-white/70">
+          Asegúrate de buscar exactamente <strong>"Downloader by AFTVnews"</strong>. Si no aparece, verifica que tu Google TV tenga acceso a la Play Store y esté actualizada.
+        </div>
+      </details>
+      
+      <details class="group">
+        <summary class="cursor-pointer font-semibold p-4 bg-black/30 rounded-lg hover:bg-black/50 transition-colors">
+          ❓ El código no funciona
+        </summary>
+        <div class="p-4 text-white/70">
+          Verifica que hayas ingresado correctamente: <strong>9261428</strong> (sin espacios ni guiones). Puedes copiarlo tocando el código arriba.
+        </div>
+      </details>
+      
+      <details class="group">
+        <summary class="cursor-pointer font-semibold p-4 bg-black/30 rounded-lg hover:bg-black/50 transition-colors">
+          ❓ No me permite instalar aplicaciones desconocidas
+        </summary>
+        <div class="p-4 text-white/70">
+          Este paso podría variar según el modelo de tu TV. Generalmente, debes ir a <strong>Configuración &gt; Apps &gt; Seguridad y restricciones &gt; </strong> y habilitarlo para Downloader by AFTVnews, pero es recomendado que busques instrucciones específicas para tu TV (debe ser Google TV).
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section class="step-card p-8 rounded-2xl text-center">
+    <h2 class="text-2xl font-bold mb-4">¿Necesitas Más Ayuda?</h2>
+    <p class="text-white/70 mb-6 max-w-2xl mx-auto">
+      Si los pasos no funcionaron o tienes alguna duda, contáctanos. Estamos aquí para ayudarte.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="https://streameko.qzz.io/contacto" target="_blank" class="inline-block px-6 py-3 font-semibold text-white bg-zinc-800 hover:bg-zinc-700 rounded-full transition-colors">
+        Contactar Soporte
+      </a>
+      <a href="https://twitter.com/Streameko" target="_blank" class="inline-block px-6 py-3 font-semibold text-white bg-zinc-800 hover:bg-zinc-700 rounded-full transition-colors">
+        Síguenos en Twitter
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="py-8 text-center border-t border-white/10 mt-20">
+  <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+    <p class="text-white/50">© 2026 Streameko. ¡Para la comunidad!</p>
+    <div class="flex gap-4 items-center">
+      <a href="https://streameko.qzz.io/privacidad" target="_blank" class="text-white/70 hover:text-white transition-colors">Política de privacidad</a>
+      <a href="https://streameko.qzz.io/contacto" target="_blank" class="text-white/70 hover:text-white transition-colors">Contacto</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function copyCode() {
+    const code = '9261428';
+    const feedback = document.getElementById('copyFeedback');
+    
+    navigator.clipboard.writeText(code).then(() => {
+      feedback.classList.add('show');
+      
+      setTimeout(() => {
+        feedback.classList.remove('show');
+      }, 2000);
+    }).catch(err => {
+      console.error('Error al copiar:', err);
+    });
+  }
+
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const targetElement = document.querySelector(this.getAttribute('href'));
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
